@@ -1,0 +1,50 @@
+# ===================== Unity =====================
+# Carpetas generadas por Unity (no se versionan)
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]serSettings/
+[Mm]emoryCaptures/
+[Rr]ecordings/
+.utmp/
+[Cc]rashlytics/
+*.stackdump
+sysinfo.txt
+
+# Archivos de proyecto generados por los IDE
+.vs/
+.idea/
+.vscode/
+*.csproj
+*.unityproj
+*.sln
+*.slnx
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Paquetes de Unity / compilados
+*.apk
+*.aab
+*.unitypackage
+*.app
+ExportedObj/
+
+# Los .meta de los assets SI se versionan (necesarios para abrir el proyecto).
+# Solo se ignoran los de las carpetas generadas de arriba.
