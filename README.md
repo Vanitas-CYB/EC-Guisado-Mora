@@ -142,18 +142,16 @@ EC_XR_GuisadoMoraChristopher
 ### 4. Detalle de los botones de interacción por rayo
 ![Detalle de los botones del panel](Capturas/04_detalle_botones.png)
 
-### 5. Configuración XR y componentes en el Inspector
-![Componentes XR en el Inspector](Capturas/05_inspector_configuracion_xr.png)
+### 5. Configuración XR y componentes en el Inspector — *pendiente de captura*
 
-> Captura del Inspector con el `XR Origin (XR Rig)`, el `XR Interaction Manager`,
-> el `XR Interaction Simulator` y/o la ventana **Project Settings > XR Plug-in Management**
-> con **OpenXR** habilitado.
+> Guardar como `Capturas/05_inspector_configuracion_xr.png`: captura del Inspector con el
+> `XR Origin (XR Rig)`, el `XR Interaction Manager`, el `XR Interaction Simulator` y/o la ventana
+> **Project Settings > XR Plug-in Management** con **OpenXR** habilitado.
 
-### 6. Interacción funcionando en ejecución
-![Interacción en ejecución](Capturas/06_interaccion_en_ejecucion.png)
+### 6. Interacción funcionando en ejecución — *pendiente de captura*
 
-> Captura tomada durante el **Play**, mostrando el rayo XR sobre un botón o un objeto
-> agarrado y el contador de la UI espacial actualizado.
+> Guardar como `Capturas/06_interaccion_en_ejecucion.png`: captura tomada durante el **Play**,
+> mostrando el rayo XR sobre un botón o un objeto agarrado y el contador de la UI espacial actualizado.
 
 ---
 
