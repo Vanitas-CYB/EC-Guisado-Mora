@@ -6,7 +6,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /// <summary>
-/// Genera capturas de pantalla de la escena renderizando desde camaras temporales.
+/// Genera capturas de la escena usando la camara principal del XR Origin (la misma que se ve
+/// al pulsar Play, con su post-procesado) para que las evidencias coincidan con la ejecucion real.
 /// Se guardan en la carpeta Capturas/ del proyecto (fuera de Assets para que Unity no las importe).
 ///
 /// Menu: EC_XR / 4. Capturar evidencias de la escena
@@ -33,40 +34,63 @@ public static class CapturarEvidencias
             Scene escena = SceneManager.GetActiveScene();
             if (escena.path != RutaEscena)
             {
-                escena = EditorSceneManager.OpenScene(RutaEscena, OpenSceneMode.Single);
+                EditorSceneManager.OpenScene(RutaEscena, OpenSceneMode.Single);
             }
 
             Directory.CreateDirectory(CarpetaCapturas);
 
-            GameObject camaraGO = new GameObject("Camara_Evidencias");
-            Camera camara = camaraGO.AddComponent<Camera>();
-            camara.fieldOfView = 55f;
-            camara.nearClipPlane = 0.05f;
-            camara.farClipPlane = 300f;
-            camara.clearFlags = CameraClearFlags.Skybox;
+            Camera camara = Camera.main;
+            bool camaraPropia = false;
+
+            if (camara == null)
+            {
+                GameObject go = new GameObject("Camara_Evidencias");
+                camara = go.AddComponent<Camera>();
+                camara.fieldOfView = 55f;
+                camara.nearClipPlane = 0.05f;
+                camara.farClipPlane = 300f;
+                camaraPropia = true;
+            }
+
+            Transform transform = camara.transform;
+            Vector3 posicionOriginal = transform.localPosition;
+            Quaternion rotacionOriginal = transform.localRotation;
 
             RenderTexture destino = new RenderTexture(Ancho, Alto, 24, RenderTextureFormat.ARGB32);
 
-            // 1) Vista general del escenario (aerea, mostrando muros, puerta y objetos)
-            CamaraMirando(camara, new Vector3(-12.5f, 8.5f, -13.5f), new Vector3(0f, 1.1f, 0f));
+            // 1) Vista general del escenario (aerea: muros, puerta, objetos y panel)
+            CamaraMirando(transform, new Vector3(-12.5f, 8.5f, -13.5f), new Vector3(0f, 1.1f, 0f));
             Guardar(camara, destino, CarpetaCapturas + "/01_vista_general.png");
 
             // 2) Vista desde la posicion del jugador (objetos, panel y UI espacial)
-            CamaraMirando(camara, new Vector3(0f, 1.7f, -5.6f), new Vector3(0f, 1.5f, 1.5f));
+            CamaraMirando(transform, new Vector3(0f, 1.7f, -5.2f), new Vector3(0f, 1.5f, 1.5f));
             Guardar(camara, destino, CarpetaCapturas + "/02_escena_desde_jugador.png");
 
             // 3) Detalle del panel de control y contador de UI espacial
-            CamaraMirando(camara, new Vector3(0.4f, 1.9f, -0.4f), new Vector3(0f, 1.85f, 2.6f));
+            CamaraMirando(transform, new Vector3(0.4f, 1.9f, -0.4f), new Vector3(0f, 1.85f, 2.6f));
             Guardar(camara, destino, CarpetaCapturas + "/03_detalle_panel_y_ui.png");
 
             // 4) Primer plano de los botones del panel de control
-            CamaraMirando(camara, new Vector3(0f, 1.55f, 0.6f), new Vector3(0f, 1.55f, 2.6f));
+            CamaraMirando(transform, new Vector3(0f, 1.55f, 0.6f), new Vector3(0f, 1.55f, 2.6f));
             Guardar(camara, destino, CarpetaCapturas + "/04_detalle_botones.png");
 
-            camara.targetTexture = null;
-            UnityEngine.Object.DestroyImmediate(camaraGO);
-            UnityEngine.Object.DestroyImmediate(destino);
+            // 5) Objetos manipulables sobre la mesa
+            CamaraMirando(transform, new Vector3(0.1f, 1.75f, -3.2f), new Vector3(0f, 1.05f, -1.4f));
+            Guardar(camara, destino, CarpetaCapturas + "/05_objetos_manipulables.png");
 
+            camara.targetTexture = null;
+
+            if (camaraPropia)
+            {
+                UnityEngine.Object.DestroyImmediate(camara.gameObject);
+            }
+            else
+            {
+                transform.localPosition = posicionOriginal;
+                transform.localRotation = rotacionOriginal;
+            }
+
+            UnityEngine.Object.DestroyImmediate(destino);
             AssetDatabase.Refresh();
 
             Debug.Log("[EC_XR] Capturas generadas en " + Path.GetFullPath(CarpetaCapturas));
@@ -78,10 +102,10 @@ public static class CapturarEvidencias
         }
     }
 
-    private static void CamaraMirando(Camera camara, Vector3 posicion, Vector3 objetivo)
+    private static void CamaraMirando(Transform transform, Vector3 posicion, Vector3 objetivo)
     {
-        camara.transform.position = posicion;
-        camara.transform.LookAt(objetivo);
+        transform.position = posicion;
+        transform.LookAt(objetivo);
     }
 
     private static void Guardar(Camera camara, RenderTexture destino, string ruta)

@@ -33,6 +33,18 @@ public static class EjecutarTodo
         Debug.Log("[EC_XR] PROCESO COMPLETO + CAPTURAS FINALIZADO");
     }
 
+    /// <summary>
+    /// Flujo completo: escena + XR + verificacion + capturas + prueba real de ejecucion (Play mode).
+    /// Termina cerrando el editor, por lo que debe ser el ultimo paso.
+    /// CLI: -executeMethod EjecutarTodo.TodoCompleto
+    /// </summary>
+    public static void TodoCompleto()
+    {
+        TodoConCapturas();
+        Ejecutar("Prueba de ejecucion (Play mode)", PruebaPlayXR.Ejecutar);
+        Debug.Log("[EC_XR] FLUJO COMPLETO FINALIZADO");
+    }
+
     private static void Ejecutar(string nombre, Action accion)
     {
         try

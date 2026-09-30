@@ -131,7 +131,7 @@ public static class ConstruirEscenaXR
         go.transform.rotation = Quaternion.Euler(48f, -35f, 0f);
         Light luz = go.AddComponent<Light>();
         luz.type = LightType.Directional;
-        luz.intensity = 0.55f;
+        luz.intensity = 1.15f;
         luz.color = new Color(1f, 0.96f, 0.9f);
         luz.shadows = LightShadows.Soft;
         return go;
@@ -782,6 +782,10 @@ public static class ConstruirEscenaXR
             Panel = Crear("M_Panel", new Color(0.1f, 0.12f, 0.16f), 0.3f);
             Puerta = Crear("M_Puerta", new Color(0.85f, 0.78f, 0.62f), 0.3f);
             Lampara = Crear("M_Lampara", new Color(0.96f, 0.96f, 0.92f), 0.5f);
+            Lampara.EnableKeyword("_EMISSION");
+            Lampara.SetColor("_EmissionColor", new Color(1f, 0.92f, 0.75f) * 0.9f);
+            Lampara.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
+            EditorUtility.SetDirty(Lampara);
         }
 
         private static Material Crear(string nombre, Color color, float suavidad)
